@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mr. King Holidays — Travel Beyond Limits</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A96E;
+      --gold-light: #E8D4A8;
+      --dark: #0D0D0D;
+      --deep: #111318;
+      --cream: #F7F3EC;
+      --text-muted: #8A8A8A;
+      --white: #fff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: linear-gradient(to bottom, rgba(13,13,13,0.95), transparent);
+      transition: background 0.4s;
+    }
+    nav.scrolled { background: rgba(13,13,13,0.97); backdrop-filter: blur(12px); }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem; font-weight: 600; letter-spacing: 0.05em;
+      color: var(--white); text-decoration: none;
+    }
+    .logo span { color: var(--gold); }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(255,255,255,0.75); text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-cta {
+      background: var(--gold); color: var(--dark);
+      padding: 0.6rem 1.5rem; border-radius: 2px;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; text-decoration: none;
+      transition: background 0.3s;
+    }
+    .nav-cta:hover { background: var(--gold-light); }
+
+    /* Hamburger */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span {
+      width: 24px; height: 2px; background: var(--white);
+      transition: all 0.3s;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative; height: 100vh; min-height: 600px;
+      display: flex; align-items: center; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1800&q=85');
+      background-size: cover; background-position: center;
+      transform: scale(1.06);
+      animation: zoomOut 14s ease forwards;
+    }
+    @keyframes zoomOut { to { transform: scale(1); } }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(120deg, rgba(0,0,0,0.72) 40%, rgba(0,0,0,0.25) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 700px; padding: 0 4rem;
+      animation: fadeUp 1.2s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-tag {
+      display: inline-block; font-size: 0.72rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gold);
+      border: 1px solid rgba(201,169,110,0.4); padding: 0.35rem 1rem;
+      margin-bottom: 1.8rem;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 300; line-height: 1.1;
+      margin-bottom: 1.4rem;
+    }
+    .hero h1 em { font-style: italic; color: var(--gold); }
+    .hero p {
+      font-size: 1rem; color: rgba(255,255,255,0.75);
+      line-height: 1.75; max-width: 480px; margin-bottom: 2.5rem;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--gold); color: var(--dark);
+      padding: 0.9rem 2.2rem; font-size: 0.82rem;
+      font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; border-radius: 2px;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-outline {
+      border: 1px solid rgba(255,255,255,0.4); color: var(--white);
+      padding: 0.9rem 2.2rem; font-size: 0.82rem;
+      font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none; border-radius: 2px;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5); z-index: 2;
+      animation: bounce 2s infinite;
+    }
+    .hero-scroll::after {
+      content: ''; width: 1px; height: 50px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ─── STATS ─── */
+    .stats {
+      background: var(--cream); color: var(--dark);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      border-top: 3px solid var(--gold);
+    }
+    .stat-item {
+      padding: 2.5rem 2rem; text-align: center;
+      border-right: 1px solid rgba(0,0,0,0.1);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem; font-weight: 600; color: var(--gold);
+      display: block; line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(13,13,13,0.6); margin-top: 0.4rem; display: block;
+    }
+
+    /* ─── SECTION SHARED ─── */
+    section { padding: 7rem 4rem; }
+    .section-tag {
+      font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.8rem; display: block;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300;
+      line-height: 1.2; margin-bottom: 1rem;
+    }
+    .section-sub {
+      color: var(--text-muted); font-size: 0.95rem; line-height: 1.75;
+      max-width: 520px;
+    }
+
+    /* ─── DESTINATIONS ─── */
+    #destinations { background: var(--deep); }
+    .dest-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 3.5rem; flex-wrap: wrap; gap: 1.5rem;
+    }
+    .dest-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 1.2rem;
+    }
+    .dest-card {
+      position: relative; border-radius: 4px; overflow: hidden;
+      cursor: pointer; group: true;
+    }
+    .dest-card:first-child {
+      grid-column: 1 / 2; grid-row: 1 / 3;
+    }
+    .dest-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s ease;
+      display: block;
+      min-height: 220px;
+    }
+    .dest-card:first-child img { min-height: 480px; }
+    .dest-card:hover img { transform: scale(1.06); }
+    .dest-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%);
+      transition: opacity 0.3s;
+    }
+    .dest-info {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.5rem 1.4rem;
+    }
+    .dest-country {
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.3rem; display: block;
+    }
+    .dest-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 400;
+    }
+    .dest-price {
+      font-size: 0.8rem; color: rgba(255,255,255,0.65);
+      margin-top: 0.2rem;
+    }
+    .dest-tag-badge {
+      position: absolute; top: 1rem; right: 1rem;
+      background: var(--gold); color: var(--dark);
+      font-size: 0.62rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 0.3rem 0.7rem; border-radius: 2px;
+    }
+
+    /* ─── SERVICES ─── */
+    #services { background: var(--dark); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2rem; margin-top: 3.5rem;
+    }
+    .service-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 2.5rem 2rem; border-radius: 4px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .service-card:hover {
+      border-color: rgba(201,169,110,0.4);
+      transform: translateY(-6px);
+    }
+    .service-icon {
+      font-size: 2rem; margin-bottom: 1.3rem; display: block;
+    }
+    .service-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 400; margin-bottom: 0.8rem;
+    }
+    .service-card p {
+      font-size: 0.88rem; color: var(--text-muted); line-height: 1.75;
+    }
+
+    /* ─── GALLERY ─── */
+    #gallery { background: var(--deep); padding-bottom: 5rem; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 220px;
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    .gallery-item { overflow: hidden; border-radius: 3px; }
+    .gallery-item img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.08); }
+    .gallery-item.tall { grid-row: span 2; }
+    .gallery-item.wide { grid-column: span 2; }
+
+    /* ─── TESTIMONIALS ─── */
+    #testimonials { background: var(--dark); }
+    .test-header { text-align: center; margin-bottom: 4rem; }
+    .test-header .section-sub { margin: 0 auto; }
+    .test-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .test-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 2.2rem; border-radius: 4px;
+    }
+    .stars { color: var(--gold); font-size: 0.85rem; letter-spacing: 0.1em; margin-bottom: 1rem; }
+    .test-card p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-style: italic; font-weight: 300;
+      line-height: 1.7; color: rgba(255,255,255,0.85);
+      margin-bottom: 1.4rem;
+    }
+    .test-author { display: flex; align-items: center; gap: 0.9rem; }
+    .test-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      object-fit: cover; border: 2px solid rgba(201,169,110,0.4);
+    }
+    .test-name { font-size: 0.85rem; font-weight: 500; }
+    .test-loc { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* ─── CTA ─── */
+    #cta {
+      position: relative; overflow: hidden;
+      min-height: 500px; display: flex; align-items: center;
+      padding: 7rem 4rem;
+    }
+    .cta-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1600&q=80');
+      background-size: cover; background-position: center;
+      filter: brightness(0.35);
+    }
+    .cta-content {
+      position: relative; z-index: 2;
+      max-width: 640px; margin: 0 auto; text-align: center;
+    }
+    .cta-content .section-title { font-size: clamp(2.2rem, 4vw, 3.5rem); }
+    .cta-content p {
+      font-size: 1rem; color: rgba(255,255,255,0.7);
+      margin: 1.2rem auto 2.5rem; max-width: 440px; line-height: 1.75;
+    }
+    .cta-form {
+      display: flex; gap: 0; max-width: 420px; margin: 0 auto;
+      border: 1px solid rgba(201,169,110,0.5); border-radius: 3px;
+      overflow: hidden;
+    }
+    .cta-form input {
+      flex: 1; padding: 1rem 1.2rem;
+      background: rgba(0,0,0,0.5); border: none; outline: none;
+      color: var(--white); font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+    }
+    .cta-form input::placeholder { color: rgba(255,255,255,0.4); }
+    .cta-form button {
+      background: var(--gold); color: var(--dark); border: none;
+      padding: 1rem 1.5rem; font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; cursor: pointer;
+      transition: background 0.3s;
+    }
+    .cta-form button:hover { background: var(--gold-light); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #080808; padding: 4rem 4rem 2rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem; margin-bottom: 3rem;
+    }
+    .footer-brand .logo { font-size: 1.5rem; }
+    .footer-brand p {
+      font-size: 0.85rem; color: var(--text-muted);
+      line-height: 1.75; margin-top: 1rem; max-width: 280px;
+    }
+    .footer-socials { display: flex; gap: 0.8rem; margin-top: 1.5rem; }
+    .footer-socials a {
+      width: 36px; height: 36px; border-radius: 2px;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; text-decoration: none; color: var(--text-muted);
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .footer-socials a:hover { border-color: var(--gold); color: var(--gold); }
+    .footer-col h4 {
+      font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul a {
+      font-size: 0.85rem; color: var(--text-muted);
+      text-decoration: none; transition: color 0.3s;
+    }
+    .footer-col ul a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 1.5rem; display: flex;
+      justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-bottom p { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+
+    /* ─── MOBILE NAV ─── */
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; z-index: 99;
+      background: rgba(13,13,13,0.98); backdrop-filter: blur(20px);
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem; font-weight: 300; color: var(--white);
+      text-decoration: none; letter-spacing: 0.06em;
+      transition: color 0.3s;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+    .close-btn {
+      position: absolute; top: 1.5rem; right: 2rem;
+      background: none; border: none; color: var(--white);
+      font-size: 1.8rem; cursor: pointer;
+    }
+
+    /* ─── MEDIA QUERIES ─── */
+
+    /* Tablet landscape */
+    @media (max-width: 1100px) {
+      nav { padding: 1.4rem 2.5rem; }
+      .nav-links { gap: 1.8rem; }
+      section { padding: 5rem 2.5rem; }
+      #cta { padding: 5rem 2.5rem; }
+      footer { padding: 3rem 2.5rem 1.5rem; }
+      .dest-grid { grid-template-columns: repeat(2, 1fr); }
+      .dest-card:first-child { grid-column: 1 / 2; grid-row: 1 / 3; }
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    }
+
+    /* Tablet portrait */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+
+      .hero-content { padding: 0 1.5rem; }
+      .hero h1 { font-size: 2.8rem; }
+
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+      .stat-item:nth-child(3) { border-top: 1px solid rgba(0,0,0,0.1); }
+      .stat-item:nth-child(4) { border-top: 1px solid rgba(0,0,0,0.1); border-right: none; }
+
+      section { padding: 4rem 1.5rem; }
+      #cta { padding: 4rem 1.5rem; }
+      footer { padding: 3rem 1.5rem 1.5rem; }
+
+      .dest-header { flex-direction: column; align-items: flex-start; }
+      .dest-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .dest-card:first-child { grid-column: 1; grid-row: auto; }
+      .dest-card:first-child img { min-height: 300px; }
+
+      .services-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 180px;
+      }
+      .gallery-item.wide { grid-column: span 2; }
+
+      .test-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+
+      .cta-form { flex-direction: column; border-radius: 0; border: none; max-width: 100%; }
+      .cta-form input {
+        border: 1px solid rgba(201,169,110,0.4); border-radius: 2px; margin-bottom: 0.8rem;
+      }
+      .cta-form button { border-radius: 2px; }
+
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 2.2rem; }
+      .hero p { font-size: 0.9rem; }
+      .hero-btns { flex-direction: column; }
+      .btn-primary, .btn-outline { text-align: center; }
+
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .stat-num { font-size: 2.2rem; }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: 200px;
+      }
+      .gallery-item.wide { grid-column: span 1; }
+      .gallery-item.tall { grid-row: span 1; }
+
+      .section-title { font-size: 1.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="logo">Mr.<span>King</span> Holidays</a>
+  <ul class="nav-links">
+    <li><a href="#destinations">Destinations</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#cta">Contact</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">Book Now</a>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-btn" id="closeMenu">✕</button>
+  <a href="#destinations" class="mm-link">Destinations</a>
+  <a href="#services" class="mm-link">Services</a>
+  <a href="#gallery" class="mm-link">Gallery</a>
+  <a href="#testimonials" class="mm-link">Reviews</a>
+  <a href="#cta" class="mm-link">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-tag">✦ Luxury Travel Redefined</span>
+    <h1>Where Every<br/><em>Journey</em><br/>Becomes Legend</h1>
+    <p>Mr. King Holidays curates extraordinary travel experiences across the world's most breathtaking destinations — tailor-made for the discerning explorer.</p>
+    <div class="hero-btns">
+      <a href="#destinations" class="btn-primary">Explore Destinations</a>
+      <a href="#cta" class="btn-outline">Plan My Trip</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item">
+    <span class="stat-num">12K+</span>
+    <span class="stat-label">Happy Travellers</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">85+</span>
+    <span class="stat-label">Destinations</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">18</span>
+    <span class="stat-label">Years of Excellence</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">4.9★</span>
+    <span class="stat-label">Avg. Rating</span>
+  </div>
+</div>
+
+<!-- DESTINATIONS -->
+<section id="destinations">
+  <div class="dest-header">
+    <div>
+      <span class="section-tag">✦ Handpicked Escapes</span>
+      <h2 class="section-title">Signature<br/>Destinations</h2>
+    </div>
+    <p class="section-sub" style="font-size:0.9rem; color:#8A8A8A; max-width:320px;">
+      From Himalayan horizons to Maldivian lagoons — curated for those who refuse the ordinary.
+    </p>
+  </div>
+
+  <div class="dest-grid">
+    <div class="dest-card">
+      <img src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=800&q=80" alt="Maldives" loading="lazy"/>
+      <div class="dest-overlay"></div>
+      <div class="dest-info">
+        <span class="dest-country">Indian Ocean</span>
+        <div class="dest-name">Maldives</div>
+        <div class="dest-price">From ₹1,85,000 / person</div>
+      </div>
+      <span class="dest-tag-badge">⭐ Top Pick</span>
+    </div>
+
+    <div class="dest-card">
+      <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=700&q=80" alt="Dubai" loading="lazy"/>
+      <div class="dest-overlay"></div>
+      <div class="dest-info">
+        <span class="dest-country">UAE</span>
+        <div class="dest-name">Dubai</div>
+        <div class="dest-price">From ₹75,000 / person</div>
+      </div>
+    </div>
+
+    <div class="dest-card">
+      <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=700&q=80" alt="Bali" loading="lazy"/>
+      <div class="dest-overlay"></div>
+      <div class="dest-info">
+        <span class="dest-country">Indonesia</span>
+        <div class="dest-name">Bali</div>
+        <div class="dest-price">From ₹55,000 / person</div>
+      </div>
+    </div>
+
+    <div class="dest-card">
+      <img src="https://images.unsplash.com/photo-1508050919630-b135583b29ab?w=700&q=80" alt="Santorini" loading="lazy"/>
+      <div class="dest-overlay"></div>
+      <div class="dest-info">
+        <span class="dest-country">Greece</span>
+        <div class="dest-name">Santorini</div>
+        <div class="dest-price">From ₹1,20,000 / person</div>
+      </div>
+      <span class="dest-tag-badge">🔥 Trending</span>
+    </div>
+
+    <div class="dest-card">
+      <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=700&q=80" alt="Tokyo" loading="lazy"/>
+      <div class="dest-overlay"></div>
+      <div class="dest-info">
+        <span class="dest-country">Japan</span>
+        <div class="dest-name">Tokyo</div>
+        <div class="dest-price">From ₹95,000 / person</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <span class="section-tag">✦ What We Offer</span>
+  <h2 class="section-title">Travel Services<br/>Beyond Compare</h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-icon">✈️</span>
+      <h3>Custom Holiday Packages</h3>
+      <p>Fully personalized itineraries built around your dream — budget, style, and pace. Every detail crafted, nothing left to chance.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🏨</span>
+      <h3>Luxury Hotel Bookings</h3>
+      <p>Exclusive access to 5-star resorts, boutique hideaways, and heritage palaces — with members-only rates and VIP perks.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🛳️</span>
+      <h3>Cruise & Yacht Holidays</h3>
+      <p>Sail across the Mediterranean, Caribbean, or Norwegian fjords aboard world-class cruise liners and private yachts.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📸</span>
+      <h3>Honeymoon Specials</h3>
+      <p>Romance-first itineraries with candlelit surprises, private beach dinners, and couple spa retreats at dreamy destinations.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🧘</span>
+      <h3>Wellness Retreats</h3>
+      <p>Recharge your soul at Ayurveda centres, mountain meditation camps, and spa sanctuaries across Kerala and Southeast Asia.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🗺️</span>
+      <h3>Group & Corporate Tours</h3>
+      <p>Seamless group travel for families, friends, and corporate teams — with dedicated coordinators and private coaches.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <span class="section-tag">✦ Through Our Lens</span>
+  <h2 class="section-title">Moments That<br/>Last Forever</h2>
+  <div class="gallery-grid">
+    <div class="gallery-item tall">
+      <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80" alt="Alps" loading="lazy"/>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=600&q=80" alt="Tropical" loading="lazy"/>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1500259783852-0ca9ce8a64dc?w=600&q=80" alt="Desert" loading="lazy"/>
+    </div>
+    <div class="gallery-item tall">
+      <img src="https://images.unsplash.com/photo-1552751753-0fc84ae5b6c8?w=600&q=80" alt="City" loading="lazy"/>
+    </div>
+    <div class="gallery-item wide">
+      <img src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=900&q=80" alt="Beach" loading="lazy"/>
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80" alt="Pool" loading="lazy"/>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="test-header">
+    <span class="section-tag">✦ Client Stories</span>
+    <h2 class="section-title">What Travellers Say</h2>
+    <p class="section-sub">Our guests don't just travel — they return with stories that inspire others to explore.</p>
+  </div>
+  <div class="test-grid">
+    <div class="test-card">
+      <div class="stars">★★★★★</div>
+      <p>"Mr. King Holidays turned our Maldives honeymoon into something straight out of a fairy tale. Every single detail was perfectly arranged."</p>
+      <div class="test-author">
+        <img class="test-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="Priya"/>
+        <div>
+          <div class="test-name">Priya Nair</div>
+          <div class="test-loc">Chennai, Tamil Nadu</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="stars">★★★★★</div>
+      <p>"The Dubai package was exceptional value. Airport pickup, hotel, desert safari — all seamlessly coordinated. Our family of 6 had zero stress."</p>
+      <div class="test-author">
+        <img class="test-avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80" alt="Ravi"/>
+        <div>
+          <div class="test-name">Ravi Shankar</div>
+          <div class="test-loc">Coimbatore, Tamil Nadu</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="stars">★★★★★</div>
+      <p>"Bali was always on my bucket list. Mr. King made it happen within my budget — luxury resort, private driver, stunning temples. Perfection."</p>
+      <div class="test-author">
+        <img class="test-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Anjali"/>
+        <div>
+          <div class="test-name">Anjali Menon</div>
+          <div class="test-loc">Bengaluru, Karnataka</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-content">
+    <span class="section-tag" style="display:block; margin-bottom:0.6rem;">✦ Let's Begin</span>
+    <h2 class="section-title" style="color:#fff;">Ready to Explore<br/><em style="font-style:italic; color:var(--gold)">the World?</em></h2>
+    <p>Drop your email and our travel experts will craft a personalised itinerary just for you — complimentary, with zero obligation.</p>
+    <div class="cta-form">
+      <input type="email" placeholder="Enter your email address"/>
+      <button>Get Itinerary</button>
+    </div>
+    <p style="margin-top:1rem; font-size:0.75rem; color:rgba(255,255,255,0.35);">Or call us: +91 98765 43210 &nbsp;|&nbsp; info@mrkingholidays.com</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo">Mr.<span>King</span> Holidays</a>
+      <p>Curating extraordinary travel experiences since 2006. IATA accredited. GST registered. Your trusted holiday partner.</p>
+      <div class="footer-socials">
+        <a href="#">f</a>
+        <a href="#">in</a>
+        <a href="#">▶</a>
+        <a href="#">📸</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Destinations</h4>
+      <ul>
+        <li><a href="#">Maldives</a></li>
+        <li><a href="#">Dubai</a></li>
+        <li><a href="#">Bali</a></li>
+        <li><a href="#">Santorini</a></li>
+        <li><a href="#">Tokyo</a></li>
+        <li><a href="#">Switzerland</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Holiday Packages</a></li>
+        <li><a href="#">Hotel Bookings</a></li>
+        <li><a href="#">Honeymoon Tours</a></li>
+        <li><a href="#">Cruise Holidays</a></li>
+        <li><a href="#">Wellness Retreats</a></li>
+        <li><a href="#">Group Tours</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Our Team</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms & Conditions</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Mr. King Holidays. All rights reserved. Designed with ♥</p>
+    <p>IATA No: 12-3 4567 8 &nbsp;|&nbsp; GST: 33XXXXX1234X1Z5</p>
+  </div>
+</footer>
+
+<script>
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const closeMenu = document.getElementById('closeMenu');
+
+  hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
+  closeMenu.addEventListener('click', () => mobileMenu.classList.remove('open'));
+
+  document.querySelectorAll('.mm-link').forEach(link => {
+    link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.dest-card, .service-card, .test-card, .gallery-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
